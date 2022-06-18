@@ -1,5 +1,4 @@
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-import React from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 import { SiShopware } from 'react-icons/si';
 import { Link, NavLink } from 'react-router-dom';
@@ -7,7 +6,8 @@ import { useStateContext } from '../contexts/ContextProvider';
 import { links } from '../data/dummy';
 
 const Sidebar = () => {
-  const { activeMenu, setActiveMenu, screenSize } = useStateContext();
+  const { activeMenu, setActiveMenu, screenSize, currentColor } =
+    useStateContext();
   const handleCloseSidebar = () => {
     if (activeMenu && screenSize <= 900) {
       setActiveMenu(false);
@@ -25,7 +25,8 @@ const Sidebar = () => {
             <Link
               to='/'
               onClick={handleCloseSidebar}
-              className='flex items-center gap-3 ml-3 mt-4 text-xl font-extrabold tracking-tight dark:text-white text-slate-800'
+              className='flex items-center gap-3 ml-3 mt-4 text-xl font-extrabold tracking-tight dark:text-white '
+              style={{ color: currentColor }}
             >
               <SiShopware /> <span>Fit Life</span>
             </Link>
@@ -34,6 +35,7 @@ const Sidebar = () => {
                 type='button'
                 onClick={() => setActiveMenu(prevActiveMenu => !prevActiveMenu)}
                 className='text-xl rounded-full p-3 hover:bg-light-gray mt-4 block'
+                style={{ color: currentColor }}
               >
                 <MdOutlineCancel />
               </button>
@@ -48,11 +50,14 @@ const Sidebar = () => {
                     to={`/${link.name}`}
                     key={link.name}
                     onClick={handleCloseSidebar}
+                    style={({ isActive }) => ({
+                      backgroundColor: isActive ? currentColor : '',
+                    })}
                     className={({ isActive }) =>
                       isActive ? activeLink : normalLink
                     }
                   >
-                    {link.icon}
+                    <span style={{ color: currentColor }}>{link.icon}</span>
                     <span className='capitalize'>{link.name}</span>
                   </NavLink>
                 ))}
